@@ -1,0 +1,18 @@
+{
+    "metrics": [
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-08708506e4916fc15", { "id": "m7", "stat": "Maximum", "period": 3600 } ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-0ed495f8c09df96b7", { "id": "m2", "stat": "Maximum", "period": 3600 } ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-0e72fd664197b9005", { "id": "m3", "stat": "Maximum", "period": 3600 } ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-09817c801cbc4789a", { "id": "m1", "stat": "Maximum", "period": 3600 } ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-062907b635116d313", { "id": "m4", "visible": false, "stat": "Maximum", "period": 3600 } ],
+        [ { "expression": "ANOMALY_DETECTION_BAND(m4, 2)", "label": "i-062907b635116d313 (Cloud6 SQL 4 (maxCalc e Feeder)) (esperado)", "id": "ad1", "color": "#95A5A6", "region": "sa-east-1", "visible": false, "stat": "Maximum", "period": 3600 } ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-0a0147d56d5b7ff7e", { "id": "m5", "stat": "Maximum", "period": 3600 } ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-0d90784e0d175aa8d", { "id": "m6", "stat": "Maximum", "period": 3600 } ]
+    ],
+    "view": "timeSeries",
+    "stacked": false,
+    "region": "sa-east-1",
+    "period": 300,
+    "stat": "Average",
+    "title": "CPUUtilization - SQL WWW"
+}

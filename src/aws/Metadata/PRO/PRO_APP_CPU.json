@@ -1,0 +1,37 @@
+{
+    "metrics": [
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-0cc67b525d20d0b6f" ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-00e86ca81b426f813" ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-0b8b99a020b2df471" ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-0b74bd7709a203038" ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-0abf6b36aa2a2dc8d" ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-07657ac99abfc46a3" ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-069620b5ca09638cf" ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-073b4efd7f0228cd5" ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-03872ade62bc8225a" ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-09aa94826005e35f9" ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-0cc2e9b3719af457c" ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-0a8dadf356b2c1795" ],
+        [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-0df186a05c3ca9670" ]
+    ],
+    "period": 86400,
+    "stat": "Maximum",
+    "title": "Quiver PRO",
+    "view": "timeSeries",
+    "stacked": false,
+    "legend": {
+        "position": "bottom"
+    },
+    "yAxis": {
+        "left": {
+            "showUnits": true
+        }
+    },
+    "setPeriodToTimeRange": true,
+    "liveData": false,
+    "width": 1360,
+    "height": 200,
+    "start": "2023-02-01T03:00:00.000Z",
+    "end": "2023-03-01T02:59:59.000Z",
+    "timezone": "-0300"
+}

@@ -1,0 +1,1398 @@
+{
+  "region": "sa-east-1",
+  "instances": [
+    {
+      "Produto": "PRO",
+      "Label": "Controlador de Domínio",
+      "State": "running",
+      "InstanceId": "i-0a62a733c8eb817bf",
+      "InstanceType": "t2.small",
+      "KeyName": "sistemasseguros",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-39-62.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.39.62",
+      "PublicDnsName": "ec2-52-67-59-205.sa-east-1.compute.amazonaws.com",
+      "PublicIpAddress": "52.67.59.205",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "Controlador de Domínio"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "backup",
+          "Value": "yes"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "DevHost + WebService",
+      "State": "running",
+      "InstanceId": "i-0d918fb38bc33cd76",
+      "InstanceType": "t3a.small",
+      "KeyName": "sistemasseguros",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-36-119.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.36.119",
+      "PublicDnsName": "ec2-54-233-71-161.sa-east-1.compute.amazonaws.com",
+      "PublicIpAddress": "54.233.71.161",
+      "Tags": [
+        {
+          "Key": "StopTime",
+          "Value": "0200-utc_tue-sun"
+        },
+        {
+          "Key": "StartTime",
+          "Value": "0730-utc_mon-fri"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "backup",
+          "Value": "yes"
+        },
+        {
+          "Key": "Name",
+          "Value": "DevHost + WebService"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "COL2",
+      "State": "running",
+      "InstanceId": "i-0d807db80e08169ea",
+      "InstanceType": "t2.xlarge",
+      "KeyName": "sistemasseguros",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-38-97.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.38.97",
+      "PublicDnsName": "ec2-54-207-91-100.sa-east-1.compute.amazonaws.com",
+      "PublicIpAddress": "54.207.91.100",
+      "Tags": [
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Name",
+          "Value": "COL2"
+        },
+        {
+          "Key": "backup",
+          "Value": "yes"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "AppQuiverPro_13",
+      "State": "stopped",
+      "InstanceId": "i-0df186a05c3ca9670",
+      "InstanceType": "c6i.2xlarge",
+      "KeyName": "appquiver-13",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1a",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-20-176.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.20.176",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "AppQuiverPro_13"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "AppQuiverPro_06",
+      "State": "running",
+      "InstanceId": "i-07657ac99abfc46a3",
+      "InstanceType": "c6i.2xlarge",
+      "KeyName": "colweb",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1a",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-20-75.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.20.75",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Name",
+          "Value": "AppQuiverPro_06"
+        },
+        {
+          "Key": "StartTime-0830",
+          "Value": "0830-3-utc_mon-fri"
+        },
+        {
+          "Key": "StartTime-1330",
+          "Value": "1330-3-utc_mon-fri"
+        },
+        {
+          "Key": "StopTime-1230",
+          "Value": "1230-3-utc_mon-fri"
+        },
+        {
+          "Key": "StopTime-1800",
+          "Value": "1800-3-utc_mon-fri"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "AppQuiverPro_07",
+      "State": "running",
+      "InstanceId": "i-069620b5ca09638cf",
+      "InstanceType": "c6i.2xlarge",
+      "KeyName": "colweb",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1a",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-21-28.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.21.28",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Name",
+          "Value": "AppQuiverPro_07"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "StopTime-1800",
+          "Value": "1800-3-utc_mon-fri"
+        },
+        {
+          "Key": "StartTime-1330",
+          "Value": "1330-3-utc_mon-fri"
+        },
+        {
+          "Key": "StartTime-0830",
+          "Value": "0830-3-utc_mon-fri"
+        },
+        {
+          "Key": "StopTime-1230",
+          "Value": "1230-3-utc_mon-fri"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "AppQuiverPro_08",
+      "State": "running",
+      "InstanceId": "i-073b4efd7f0228cd5",
+      "InstanceType": "c6i.2xlarge",
+      "KeyName": "colweb",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1a",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-20-179.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.20.179",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "StopTime-1800",
+          "Value": "1800-3-utc_mon-fri"
+        },
+        {
+          "Key": "StopTime-1230",
+          "Value": "1230-3-utc_mon-fri"
+        },
+        {
+          "Key": "Name",
+          "Value": "AppQuiverPro_08"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "StartTime-0900",
+          "Value": "0900-3-utc_mon-fri"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "StartTime-1400",
+          "Value": "1400-3-utc_mon-fri"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "AppQuiverPro_09",
+      "State": "stopping",
+      "InstanceId": "i-03872ade62bc8225a",
+      "InstanceType": "c6i.2xlarge",
+      "KeyName": "colweb",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1a",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-21-63.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.21.63",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "StartTime-1400",
+          "Value": "1400-3-utc_mon-fri"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Name",
+          "Value": "AppQuiverPro_09"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "StopTime-1730",
+          "Value": "1730-3-utc_mon-fri"
+        },
+        {
+          "Key": "StopTime-1200",
+          "Value": "1200-3-utc_mon-fri"
+        },
+        {
+          "Key": "StartTime-0900",
+          "Value": "0900-3-utc_mon-fri"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "AppQuiverPro_10",
+      "State": "stopping",
+      "InstanceId": "i-09aa94826005e35f9",
+      "InstanceType": "c6i.2xlarge",
+      "KeyName": "colweb",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1a",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-23-236.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.23.236",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "StartTime-0930",
+          "Value": "0930-3-utc_mon-fri"
+        },
+        {
+          "Key": "StopTime-1730",
+          "Value": "1730-3-utc_mon-fri"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "StopTime-1200",
+          "Value": "1200-3-utc_mon-fri"
+        },
+        {
+          "Key": "Name",
+          "Value": "AppQuiverPro_10"
+        },
+        {
+          "Key": "StartTime-1430",
+          "Value": "1430-3-utc_mon-fri"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "AppQuiverPro_11",
+      "State": "stopped",
+      "InstanceId": "i-0cc2e9b3719af457c",
+      "InstanceType": "c6i.2xlarge",
+      "KeyName": "colweb",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1a",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-23-177.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.23.177",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "StartTime-0930",
+          "Value": "0930-3-utc_mon-fri"
+        },
+        {
+          "Key": "Name",
+          "Value": "AppQuiverPro_11"
+        },
+        {
+          "Key": "StartTime-1430",
+          "Value": "1430-3-utc_mon-fri"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "StopTime-1700",
+          "Value": "1700-3-utc_mon-fri"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "StopTime-1200",
+          "Value": "1200-3-utc_mon-fri"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "AppQuiverPro_12",
+      "State": "stopped",
+      "InstanceId": "i-0a8dadf356b2c1795",
+      "InstanceType": "c6i.2xlarge",
+      "KeyName": "colweb",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1a",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-21-101.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.21.101",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "AppQuiverPro_12"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "StartTime-1000",
+          "Value": "1000-3-utc_mon-fri"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "StopTime-1130",
+          "Value": "1130-3-utc_mon-fri"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "StartTime-1530",
+          "Value": "1530-3-utc_mon-fri"
+        },
+        {
+          "Key": "StopTime-1700",
+          "Value": "1700-3-utc_mon-fri"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "Cliente - VOLVO",
+      "State": "running",
+      "InstanceId": "i-049953e8c91dac705",
+      "InstanceType": "t3.large",
+      "KeyName": "sistemasseguros",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-36-45.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.36.45",
+      "PublicDnsName": "ec2-52-67-172-40.sa-east-1.compute.amazonaws.com",
+      "PublicIpAddress": "52.67.172.40",
+      "Tags": [
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "VOLVO"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Name",
+          "Value": "Cliente - VOLVO"
+        },
+        {
+          "Key": "backup",
+          "Value": "yes"
+        }
+      ],
+      "PlatformDetails": "Windows with SQL Server Web"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "Domain Controller 2",
+      "State": "running",
+      "InstanceId": "i-066ba2039fee4f845",
+      "InstanceType": "t2.small",
+      "KeyName": "domain_controller_2",
+      "Monitoring": "enabled",
+      "Region": "sa-east-1b",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-26-15.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.26.15",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "backup",
+          "Value": "yes"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "Name",
+          "Value": "Domain Controller 2"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "AppQuiverPro_01",
+      "State": "running",
+      "InstanceId": "i-0cc67b525d20d0b6f",
+      "InstanceType": "c6i.xlarge",
+      "KeyName": "colweb",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-25-216.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.25.216",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "AppQuiverPro_01"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "backup",
+          "Value": "yes"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "AppQuiverPro_03",
+      "State": "running",
+      "InstanceId": "i-0b8b99a020b2df471",
+      "InstanceType": "c6i.2xlarge",
+      "KeyName": "colweb",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-25-241.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.25.241",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "StopTime-1210-sat",
+          "Value": "1210-3-utc_sat"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "StartTime-1000-sat",
+          "Value": "1000-3-utc_sat"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Name",
+          "Value": "AppQuiverPro_03"
+        },
+        {
+          "Key": "StartTime-0800",
+          "Value": "0800-3-utc_mon-fri"
+        },
+        {
+          "Key": "StopTime-1900",
+          "Value": "1900-3-utc_mon-fri"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "AppQuiverPro_02",
+      "State": "running",
+      "InstanceId": "i-00e86ca81b426f813",
+      "InstanceType": "c6i.2xlarge",
+      "KeyName": "colweb",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-26-87.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.26.87",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "AppQuiverPro_02"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "backup",
+          "Value": "yes"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "AppQuiverPro_04",
+      "State": "running",
+      "InstanceId": "i-0b74bd7709a203038",
+      "InstanceType": "c6i.2xlarge",
+      "KeyName": "colweb",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-24-48.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.24.48",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "AppQuiverPro_04"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "StopTime-1900",
+          "Value": "1900-3-utc_mon-fri"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "StartTime-0800",
+          "Value": "0800-3-utc_mon-fri"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "web1-docker -Statistics - mongo e app",
+      "State": "running",
+      "InstanceId": "i-0e29aa61a77b29250",
+      "InstanceType": "t3.small",
+      "KeyName": "web1-docker",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "PrivateDnsName": "ip-10-10-24-92.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.24.92",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "Name",
+          "Value": "web1-docker -Statistics - mongo e app"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "backup",
+          "Value": "yes"
+        }
+      ],
+      "PlatformDetails": "Linux/UNIX"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "Qlikview Linux 2",
+      "State": "running",
+      "InstanceId": "i-06f7b6489c8684b0d",
+      "InstanceType": "t3a.xlarge",
+      "KeyName": "QlikView",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "PrivateDnsName": "ip-10-10-27-226.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.27.226",
+      "PublicDnsName": "ec2-54-94-37-24.sa-east-1.compute.amazonaws.com",
+      "PublicIpAddress": "54.94.37.24",
+      "Tags": [
+        {
+          "Key": "backup",
+          "Value": "yes"
+        },
+        {
+          "Key": "Name",
+          "Value": "Qlikview Linux 2"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        }
+      ],
+      "PlatformDetails": "Linux/UNIX"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "Juncao",
+      "State": "stopped",
+      "InstanceId": "i-08d1e432cfdacda03",
+      "InstanceType": "t3a.medium",
+      "KeyName": "GC-Radar",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-26-81.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.26.81",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "Cliente",
+          "Value": "GC"
+        },
+        {
+          "Key": "Name",
+          "Value": "Juncao"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        }
+      ],
+      "PlatformDetails": "Windows with SQL Server Web"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "SQL Server - 04",
+      "State": "running",
+      "InstanceId": "i-06101a321fb20fd90",
+      "InstanceType": "m6i.2xlarge",
+      "KeyName": "Quiver2",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-24-214.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.24.214",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Name",
+          "Value": "SQL Server - 04"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "DB",
+          "Value": "SQL"
+        },
+        {
+          "Key": "backup",
+          "Value": "volume"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "SQL Server - 05",
+      "State": "running",
+      "InstanceId": "i-0d6816f40326b35f2",
+      "InstanceType": "m6i.2xlarge",
+      "KeyName": "Quiver2",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-24-152.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.24.152",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "DB",
+          "Value": "SQL"
+        },
+        {
+          "Key": "Name",
+          "Value": "SQL Server - 05"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "backup",
+          "Value": "volume"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "SQL Server - 01",
+      "State": "running",
+      "InstanceId": "i-010adcf1add463467",
+      "InstanceType": "t3a.xlarge",
+      "KeyName": "Quiver2",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-24-200.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.24.200",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "SQL Server - 01"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "backup",
+          "Value": "volume"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "DB",
+          "Value": "SQL"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "Cliente – ROMAP (SQL)",
+      "State": "running",
+      "InstanceId": "i-093d9a60caca17d09",
+      "InstanceType": "t3.large",
+      "KeyName": "ClienteROMAPSQL",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-24-112.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.24.112",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "backup",
+          "Value": "yes"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "ROMAP"
+        },
+        {
+          "Key": "Name",
+          "Value": "Cliente – ROMAP (SQL)"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "DB",
+          "Value": "SQL"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "SQL Server - 01 - GC",
+      "State": "running",
+      "InstanceId": "i-0ead036376a9bea1c",
+      "InstanceType": "r6i.2xlarge",
+      "KeyName": "Quiver2",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-26-41.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.26.41",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "backup",
+          "Value": "volume"
+        },
+        {
+          "Key": "DB",
+          "Value": "SQL"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "GC"
+        },
+        {
+          "Key": "Name",
+          "Value": "SQL Server - 01 - GC"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "web3-docker -Statistics - mongo e app",
+      "State": "running",
+      "InstanceId": "i-0844d39a5a56e763a",
+      "InstanceType": "t3.small",
+      "KeyName": "web1-docker",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "PrivateDnsName": "ip-10-10-26-161.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.26.161",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "backup",
+          "Value": "yes"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Name",
+          "Value": "web3-docker -Statistics - mongo e app"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        }
+      ],
+      "PlatformDetails": "Linux/UNIX"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "bastion",
+      "State": "running",
+      "InstanceId": "i-0596ff3bf10f923f6",
+      "InstanceType": "t3.micro",
+      "KeyName": "appquiver-13",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1a",
+      "PrivateDnsName": "ip-10-10-14-69.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.14.69",
+      "PublicDnsName": "ec2-18-230-35-30.sa-east-1.compute.amazonaws.com",
+      "PublicIpAddress": "18.230.35.30",
+      "Tags": [
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "Name",
+          "Value": "bastion"
+        }
+      ],
+      "PlatformDetails": "Linux/UNIX"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "Qlikview",
+      "State": "running",
+      "InstanceId": "i-08ba15ec9be00c2bf",
+      "InstanceType": "m5.2xlarge",
+      "KeyName": "sistemasseguros",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1c",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-29-53.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.29.53",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "backup",
+          "Value": "yes"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Cliente",
+          "Value": "COMPARTILHADO"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "Name",
+          "Value": "Qlikview"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "AppQuiverPro_05",
+      "State": "running",
+      "InstanceId": "i-0abf6b36aa2a2dc8d",
+      "InstanceType": "c6i.2xlarge",
+      "KeyName": "colweb-novo",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1b",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-24-24.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.24.24",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "StopTime-1830",
+          "Value": "1830-3-utc_mon-fri"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        },
+        {
+          "Key": "StartTime-0830",
+          "Value": "0830-3-utc_mon-fri"
+        },
+        {
+          "Key": "Name",
+          "Value": "AppQuiverPro_05"
+        },
+        {
+          "Key": "tag1Key\t",
+          "Value": "PRO"
+        },
+        {
+          "Key": "cliente",
+          "Value": "COMPARTILHADO"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Produto": "PRO",
+      "Label": "MultTools",
+      "State": "running",
+      "InstanceId": "i-05349df0d1a46b218",
+      "InstanceType": "t3a.small",
+      "KeyName": "web1-docker",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1a",
+      "PrivateDnsName": "ip-10-10-12-228.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.12.228",
+      "PublicDnsName": "ec2-52-67-236-138.sa-east-1.compute.amazonaws.com",
+      "PublicIpAddress": "52.67.236.138",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "MultTools"
+        },
+        {
+          "Key": "StopTime-1800",
+          "Value": "1800-3-utc_mon-fri"
+        },
+        {
+          "Key": "StartTime-0800",
+          "Value": "0800-3-utc_mon-fri"
+        },
+        {
+          "Key": "tag1Key",
+          "Value": "PRO"
+        },
+        {
+          "Key": "produto",
+          "Value": "PRO"
+        }
+      ],
+      "PlatformDetails": "Linux/UNIX"
+    },
+    {
+      "Label": "Quiver Leads",
+      "State": "running",
+      "InstanceId": "i-0018a4cb59d316c86",
+      "InstanceType": "t3a.micro",
+      "KeyName": "QuiverLeads",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1a",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-12-92.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.12.92",
+      "PublicDnsName": "ec2-18-230-140-159.sa-east-1.compute.amazonaws.com",
+      "PublicIpAddress": "18.230.140.159",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "Quiver Leads"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Label": "Cliente - Mercedes Homolog",
+      "State": "stopped",
+      "InstanceId": "i-0a51ccd4131fc3fd7",
+      "InstanceType": "t3a.small",
+      "KeyName": "Chave-Mercedes-Homolog",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1a",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-13-154.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.13.154",
+      "PublicDnsName": "ec2-54-207-218-60.sa-east-1.compute.amazonaws.com",
+      "PublicIpAddress": "54.207.218.60",
+      "Tags": [
+        {
+          "Key": "backup",
+          "Value": "yes"
+        },
+        {
+          "Key": "Name",
+          "Value": "Cliente - Mercedes Homolog"
+        },
+        {
+          "Key": "StartTime",
+          "Value": "1100-utc_mon-fri"
+        },
+        {
+          "Key": "StopTime",
+          "Value": "2030-utc_tue-sun"
+        }
+      ],
+      "PlatformDetails": "Windows with SQL Server Web"
+    },
+    {
+      "Label": "bastion-windows",
+      "State": "running",
+      "InstanceId": "i-0af1b30e7487f25aa",
+      "InstanceType": "t3a.micro",
+      "KeyName": "daredebastion",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1a",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-14-168.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.14.168",
+      "PublicDnsName": "ec2-18-231-143-33.sa-east-1.compute.amazonaws.com",
+      "PublicIpAddress": "18.231.143.33",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "bastion-windows"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    },
+    {
+      "Label": "Cliente - Toyota Homolog",
+      "State": "running",
+      "InstanceId": "i-03e910b8a07aa48db",
+      "InstanceType": "t3a.small",
+      "KeyName": "toyota-hml",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1a",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-13-162.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.13.162",
+      "PublicDnsName": "ec2-54-233-70-175.sa-east-1.compute.amazonaws.com",
+      "PublicIpAddress": "54.233.70.175",
+      "Tags": [
+        {
+          "Key": "StopTime-2200",
+          "Value": "2200-3-utc_mon-fri"
+        },
+        {
+          "Key": "StartTime-0800",
+          "Value": "0800-3-utc_mon-fri"
+        },
+        {
+          "Key": "backup",
+          "Value": "yes"
+        },
+        {
+          "Key": "Name",
+          "Value": "Cliente - Toyota Homolog"
+        }
+      ],
+      "PlatformDetails": "Windows with SQL Server Web"
+    },
+    {
+      "Label": "Cliente - Toyota Dev",
+      "State": "running",
+      "InstanceId": "i-0088f346a1aa2c40d",
+      "InstanceType": "t3a.small",
+      "KeyName": "Chave-Toyota-Dev",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1a",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-15-170.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.15.170",
+      "PublicDnsName": "ec2-15-229-54-245.sa-east-1.compute.amazonaws.com",
+      "PublicIpAddress": "15.229.54.245",
+      "Tags": [
+        {
+          "Key": "backup",
+          "Value": "yes"
+        },
+        {
+          "Key": "Name",
+          "Value": "Cliente - Toyota Dev"
+        },
+        {
+          "Key": "StartTime-0800",
+          "Value": "0800-3-utc_mon-fri"
+        },
+        {
+          "Key": "StopTime-1900",
+          "Value": "1900-3-utc_mon-fri"
+        }
+      ],
+      "PlatformDetails": "Windows with SQL Server Web"
+    },
+    {
+      "Label": "Cliente - GC HOMOLOG",
+      "State": "stopped",
+      "InstanceId": "i-0f6746724ad92e9d4",
+      "InstanceType": "t3a.small",
+      "KeyName": "Cliente-GC-Homolog",
+      "Monitoring": "disabled",
+      "Region": "sa-east-1a",
+      "Platform": "windows",
+      "PrivateDnsName": "ip-10-10-15-21.sa-east-1.compute.internal",
+      "PrivateIpAddress": "10.10.15.21",
+      "PublicDnsName": "",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "Cliente - GC HOMOLOG"
+        }
+      ],
+      "PlatformDetails": "Windows"
+    }
+  ]
+}

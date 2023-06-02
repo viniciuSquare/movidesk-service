@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+// generator erd {
+//   provider = "prisma-erd-generator"
+// }
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Metrics {
+  id           Int             @id @default(autoincrement())
+  resource     MetricResource?
+  service      MetricService?
+  instanceId   Int
+  maximumUsage Float
+  date         DateTime
+  period       Periods?
+  product      QuiverProducts?
+
+  instance Instances @relation(fields: [instanceId], references: [id])
+
+  @@unique([resource, service, instanceId, date])
+  @@map("metrics")
+}
+
+enum MetricService {
+  Application
+  Database
+}
+
+enum MetricResource {
+  CPU
+  Memory
+}
+
+model Instances {
+  id               Int     @id @default(autoincrement())
+  label            String?
+  instanceId       String?
+  region           String?
+  product          String?
+  service          String?
+  instanceType     String?
+  keyName          String?
+  platform         String?
+  tags             Json?
+  privateIpAddress String?
+  publicIpAddress  String?
+
+  Metrics Metrics[]
+
+  @@map("instances_details")
+}
+
+model AWSDashboardDetails {
+  id            Int            @id @default(autoincrement())
+  dashboardName String
+  service       MetricService
+  resource      MetricResource
+  product       QuiverProducts
+
+  @@map("aws_dashboard_details")
+}
+
+enum QuiverProducts {
+  PRO
+  PLUS
+}
+
+enum Periods {
+  DIA
+  NORMAL
+  PICO
+  NOTURNO
+}

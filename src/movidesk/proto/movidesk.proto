@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package movidesk;
+
+import "./ticket.proto";
+
+service MovideskService {
+  rpc GetTicket (GetTicketRequest) returns (ticket.Response);
+  rpc GetAllTickets (GetAllTicketsRequest) returns (GetAllTicketsResponse);
+  rpc UpdateTicket (UpdateTicketRequest) returns (UpdateTicketResponse);
+  rpc PostTicket (PostTicketRequest) returns (PostTicketResponse);
+}
+
+message PostTicketRequest {
+  int32 type = 1;
+  string status = 2;
+  string justification = 3;
+  string subject = 4;
+  string category = 5;
+  User createdBy = 6;
+  repeated Client clients = 7;
+  repeated TicketAction actions = 8;
+}
+
+message User {
+  string id = 1;
+}
+
+message Client {
+  string id = 1;
+}
+
+message TicketAction {
+  int32 type = 1;
+  string description = 2;
+  User createdBy = 3;
+}
+
+message PostTicketResponse{
+  string data = 1;
+}
+
+message Search {
+  repeated CustomFieldValues customFieldValues = 1;
+}
+
+message CustomFieldValues {
+  map<string, CustomFieldValue2> values = 1;
+}
+
+message CustomFieldValue2 {
+  oneof value_type {
+    string value = 1;
+    bool storageFileGuid = 2;
+    string customFieldItem = 3;
+  }
+}
+
+message GetAllTicketsRequest {
+  Search search = 1;
+}
+
+message GetAllTicketsResponse {
+  string data = 1;
+}
+
+message GetTicketRequest {
+  string id = 1;
+}
+
+message UpdateTicketRequest {
+  string id = 1;
+}
+
+message UpdateTicketResponse {
+  string data = 1;
+}

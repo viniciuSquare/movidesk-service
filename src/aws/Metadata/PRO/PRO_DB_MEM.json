@@ -1,0 +1,19 @@
+{
+    "metrics": [
+        [ "CWAgent", "Memory % Committed Bytes In Use", "host", "SQLSERVER", "objectname", "Memory" ],
+        [ "CWAgent", "Memory % Committed Bytes In Use", "host", "SQLROMAP", "objectname", "Memory", { "visible": false } ],
+        [ "CWAgent", "Memory % Committed Bytes In Use", "InstanceId", "i-06101a321fb20fd90" ],
+        [ "CWAgent", "Memory % Committed Bytes In Use", "host", "SQLSERVER-05", "objectname", "Memory" ],
+        [ "CWAgent", "Memory % Committed Bytes In Use", "host", "SQLSERVER-01-GC", "objectname", "Memory" ]
+    ],
+    "view": "timeSeries",
+    "stacked": false,
+    "title": "Memória Banco QuiverPRO",
+    "period": 3600,
+    "stat": "Maximum",
+    "width": 1150,
+    "height": 200,
+    "start": "2023-02-01T03:00:00.000Z",
+    "end": "2023-03-01T02:59:59.000Z",
+    "timezone": "-0300"
+}
