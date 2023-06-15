@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `ActionTimes` MODIFY `id` INTEGER NOT NULL;
+
+-- AlterTable
+ALTER TABLE `Team` MODIFY `id` INTEGER NOT NULL AUTO_INCREMENT;

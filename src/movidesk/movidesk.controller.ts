@@ -1,6 +1,8 @@
 import { Controller, Get, Body, Patch, Param, Post, Query } from '@nestjs/common';
 import { MovideskService } from './movidesk.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
+import { PrismaService } from 'src/prisma/prisma.servide';
+import { TicketRepository } from './repository/ticket.repository';
 
 /**
  * Controller to handle Movidesk requests
@@ -8,11 +10,117 @@ import { CreateTicketDto } from './dto/create-ticket.dto';
  */
 @Controller('movidesk/ticket')
 export class MovideskController {
+
+  defaultSearch = {
+    search: {
+      normalFieldValues: [
+        { name: "id" },
+        { name: "subject" },
+        { name: "owner" },
+        { name: "category" },
+        { name: "createdDate", value: " gt 2023-05-22" },
+        { name: "ownerTeam", value: "'Infra de Produção'" },
+        { expand: "actions", value: "timeAppointments", select: 'status, createdDate' }
+      ]
+    }
+  }
   /**
    * Constructor
    * @param movideskService Movidesk Service to handle requests
    */
-  constructor(private readonly movideskService: MovideskService) { }
+  constructor(
+    private readonly movideskService: MovideskService,
+    private prismaService: PrismaService,
+    private ticketRepository: TicketRepository
+  ) { }
+  @Get()
+  async test() {
+
+    const test = await this.ticketRepository.findOrSaveTeam("Infra de Produção");
+    if (test)
+      console.log(true)
+    else console.log(false)
+
+    return {
+      message: 'Hello World... UÉ',
+      test
+    }
+  }
+
+  @Post('/process-period')
+  async processMetricsFromPeriod(@Body() { period }) {
+    console.log(period)
+
+    const { start, end } = period;
+
+    // const data = await this.getAllTickets({ ...this.defaultSearch, period: { start, end } });
+
+    const query = "&$select=resolvedIn,lastUpdate,ownerTeam,createdDate,category,owner,subject,id&$expand=actions($expand=timeAppointments($expand=createdBy)),actions($select=status, createdDate),owner($select=businessName)"
+    const periodFilter = "&$filter=(createdDate gt 2023-05-01 and createdDate lt 2023-05-31) or (resolvedIn gt 2023-05-01 and resolvedIn lt 2023-05-31)";
+    const teamFilter = " and (ownerTeam eq 'Infra de Produção' or ownerTeam eq 'Infra Corporativa' )";
+    console.log(start, end)
+
+    const $query = `&$select=resolvedIn,lastUpdate,ownerTeam,createdDate,category,owner,subject,id&$expand=actions($expand=timeAppointments($expand=createdBy)),actions($select=status, createdDate),owner($select=businessName)&$filter=((createdDate gt ${start} and createdDate lt ${end}) or (resolvedIn gt ${start} and resolvedIn lt ${end})) and (ownerTeam eq 'Infra de Produção' or ownerTeam eq 'Infra Corporativa' )`
+    // const data = await this.getAllTickets({ ...this.defaultSearch, period: { start, end } });
+    // return {
+    //   tickets: {
+    //     data
+    //   }
+    // };
+
+    // const tickets = await this.movideskService.rawQuery(query + periodFilter + teamFilter);
+
+    return await this.movideskService.rawQuery($query)
+      .then(async tickets => {
+        const processedTicketsCount = await this.movideskService.processTickets(tickets);
+
+        const ticketByTeam: any[] = [];
+
+        tickets.forEach((ticket) => {
+          const ownerTeam = ticket.ownerTeam;
+
+          let teamTickets = ticketByTeam.find((t) => t.ownerTeam === ownerTeam);
+
+          if (!teamTickets) {
+            teamTickets = { ownerTeam, tickets: [], count: 0 };
+
+            ticketByTeam.push(teamTickets);
+          }
+
+          teamTickets.tickets.push(ticket);
+          teamTickets.count += 1;
+        });
+
+        console.log(ticketByTeam);
+
+        return {
+          data: {
+            ...processedTicketsCount,
+            tickets: ticketByTeam
+          }
+        };
+      })
+    // .then( processedData => {
+    //   if(processedData.data.count.tickets == 1000) {
+
+    //   }
+
+    //  );
+  }
+
+  @Post('/raw')
+  async rawQuery(@Body() filter) {
+    const { query } = filter;
+
+    const tickets = await this.movideskService.rawQuery(query);
+
+    return {
+      count: {
+        tickets: tickets.length
+      },
+      tickets
+    };
+  }
 
   // Get tickets from given params 
   @Post('/getAll')
@@ -22,10 +130,25 @@ export class MovideskController {
     return await this.movideskService.getAll(filterTicketDTO);
   }
 
+  @Get('/incidents/:start/:end')
+  async incidentTickets(@Param('start') start: string, @Param('end') end: string) {
+    return await this.movideskService.getIncidents({ start, end });
+  }
+
   @Get('/by-employee/:start/:end')
-  async ticketsByEmployee(@Query() filterTicketDTO) {
-    
-    const tickets = await this.movideskService.getTicketsByEmployee(filterTicketDTO);
+  async ticketsByEmployees(
+    @Param('start') start: string,
+    @Param('end') end: string
+  ) {
+    const { data: tickets } = await this.movideskService.getAll(
+      {
+        ...this.defaultSearch,
+        period: {
+          start,
+          end
+        }
+      }
+    );
 
     const ticketByOwner: any[] = [];
 
@@ -36,7 +159,7 @@ export class MovideskController {
 
       if (!ownerTickets) {
         ownerTickets = { owner, tickets: [], count: 0 };
-        
+
         ticketByOwner.push(ownerTickets);
       }
 
@@ -50,9 +173,48 @@ export class MovideskController {
 
   }
 
-  @Get('/incidents')
-  async incidentTickets() {
-    // this.movideskService.getAll()
+  @Get('/teams/:start/:end')
+  async getTeams(@Param('start') start: string, @Param('end') end: string) {
+    const filter = {
+      period: {
+        start,
+        end
+      },
+      search: {
+        normalFieldValues: [
+          { name: "id" },
+          { name: "subject" },
+          { name: "owner" },
+          { name: "category" },
+          { name: "createdDate", value: "ge " + new Date(start).toISOString() },
+          { name: "ownerTeam" },
+          { expand: "actions", value: "timeAppointments", select: 'status, createdDate' }
+        ]
+      }
+    }
+
+    const { data: tickets } = await this.movideskService.getAll(filter);
+
+    const ticketByTeam: any[] = [];
+
+    tickets.forEach((ticket) => {
+      const ownerTeam = ticket.ownerTeam;
+
+      let teamTickets = ticketByTeam.find((t) => t.ownerTeam === ownerTeam);
+
+      if (!teamTickets) {
+        teamTickets = { ownerTeam, tickets: [], count: 0 };
+
+        ticketByTeam.push(teamTickets);
+      }
+
+      teamTickets.tickets.push(ticket);
+      teamTickets.count += 1;
+    });
+
+    console.log(ticketByTeam);
+
+    return ticketByTeam;
   }
 
   // ---------------------
@@ -61,8 +223,9 @@ export class MovideskController {
    * @param id Ticket ID
    * @returns Ticket
    */
-  @Get('/by-id=:id')
-  async getTicket(@Param('id') id: string) {
+  @Get('/by-id')
+  async getTicket(@Query('id') id: string) {
+    console.log(id)
     return await this.movideskService.getTicket(id);
   }
 
@@ -90,6 +253,4 @@ export class MovideskController {
   postTicket(@Body() createTicketDto: CreateTicketDto) {
     return this.movideskService.createTicket(createTicketDto);
   }
-
-  
 }
