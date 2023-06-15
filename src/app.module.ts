@@ -6,12 +6,11 @@ import { AppService } from './app.service';
 import { ExceptionFilterHttp } from './core/filter/exception_http.filter';
 import { MovideskModule } from './movidesk/movidesk.module';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
-import { AWSModule } from './aws/aws.module';
+import { PrismaService } from './prisma/prisma.servide';
 
 @Module({
   imports: [
     MovideskModule,
-    AWSModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
       isGlobal: true,

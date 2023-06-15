@@ -4,16 +4,16 @@ import { MovideskController } from './movidesk.controller';
 import { HttpModule } from '@nestjs/axios';
 import { MovideskGrpcServerController } from './movidesk-grpc-server/movidesk-grpc-server.controller';
 import { OpenDataProtocolService } from '../providers/openDataProtocol.service';
+import { PrismaService } from 'src/prisma/prisma.servide';
+import { TicketRepository } from './repository/ticket.repository';
 
 @Module({
   imports: [HttpModule.register({})],
   controllers: [MovideskController, MovideskGrpcServerController],
   providers: [
     MovideskService,
-    {
-      provide: 'OData',
-      useClass: OpenDataProtocolService,
-    },
+    OpenDataProtocolService,
+    PrismaService, TicketRepository
   ],
 })
 export class MovideskModule {}

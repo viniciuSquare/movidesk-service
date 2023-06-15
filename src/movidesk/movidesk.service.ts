@@ -1,10 +1,11 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
-import { Inject } from '@nestjs/common/decorators/core/inject.decorator';
 import { AxiosError } from 'axios';
 import { catchError, lastValueFrom } from 'rxjs';
-import { IOData } from 'src/providers/interfaces/iodata';
 import { CreateTicketDto } from './dto/create-ticket.dto';
+import { OpenDataProtocolService } from 'src/providers/openDataProtocol.service';
+import { TicketRepository } from './repository/ticket.repository';
+import { TicketFilterDto } from './dto/ticket-filter.dto';
 // import { TicketFilterDto } from './dto/ticket-filter.dto';
 /**
  * Movidesk Service
@@ -16,14 +17,18 @@ export class MovideskService {
    * Logger
    */
   protected logger = new Logger(MovideskService.name);
+
   /**
    * Constructor
    * @param httpService Http Service to handle requests
    */
   constructor(
     private readonly httpService: HttpService,
-    @Inject('OData') private readonly oDataProvider: IOData,
-  ) {}
+    private readonly oDataProvider: OpenDataProtocolService,
+    private readonly repository: TicketRepository,
+
+    // @Inject('OData') private readonly oDataProvider: IOData,
+  ) { }
 
   /**
    * Movidesk URL
@@ -32,53 +37,9 @@ export class MovideskService {
   http: string = process.env.MOVIDESK_URL;
 
 
-  async getAll({ search }) {
-    const query = await this.oDataProvider.formatNormalFieldValues(
-      search?.normalFieldValues, 
-    );
-    
-    console.log(query)
-      
-    const { data } = await lastValueFrom<{data: Movidesk.TicketResponse[]}>(
-      this.httpService
-        .get(`${this.http}?token=${process.env.MOVIDESK_TOKEN}${query}`)
-        .pipe(
-          catchError((error: AxiosError) => {
-            this.logger.error(error.response.data);
-            throw 'An error happened!';
-          }),
-        ),
-    );
 
-    return {
-      query,
-      count: data.length,
-      data
-    };
-  }
-
-  async getTicketsByEmployee({ search }) {
-    const filterTicketDTO = {
-      search: {
-        period: search?.period ? search.period : null , 
-        normalFieldValues: [
-          { name: "id" },
-          { name: "subject" },
-          { name: "owner", expand: "owner" },
-          { name: "category" },
-          { name: "createdDate", value: "gt 2023-05-22T00:00:00.00z" },
-          { name: "createdDate", value: "lt 2023-05-30T00:00:00.00z" },
-          { name: "actions" },
-          { name: "ownerTeam", value: "'Infra Corporativa'" },
-          { expand: "actions", value: "timeAppointments" },
-        ]
-      }
-    }
-    const query = await this.oDataProvider.formatNormalFieldValues(
-      search?.normalFieldValues,
-    );
-    console.log(query);
-    const { data } = await lastValueFrom<{data: Movidesk.TicketResponse[]}>(
+  async rawQuery(query: string) {
+    const { data } = await lastValueFrom<{ data: Movidesk.TicketResponse[] }>(
       this.httpService
         .get(`${this.http}?token=${process.env.MOVIDESK_TOKEN}${query}`)
         .pipe(
@@ -91,7 +52,103 @@ export class MovideskService {
 
     return data;
   }
-  
+
+  async getAll(filter: TicketFilterDto) {
+    const query = await this.oDataProvider.formatNormalFieldValues(
+      filter.search?.normalFieldValues,
+    );
+    console.log(query)
+
+    const data = await this.rawQuery(query);
+
+    return {
+      query,
+      count: data.length,
+      data
+    };
+  }
+
+  // METRICS QUERY
+
+  async getTicketsByEmployee(search, period = { start: '', end: '' }) {
+    const query = await this.oDataProvider.formatNormalFieldValues(
+      search?.normalFieldValues,
+    );
+
+    const periodQuery = this.oDataProvider.formatPeriod(period);
+
+    console.log(query);
+    const { data } = await lastValueFrom<{ data: Movidesk.TicketResponse[] }>(
+      this.httpService
+        .get(`${this.http}?token=${process.env.MOVIDESK_TOKEN}${query} and ${periodQuery}`)
+        .pipe(
+          catchError((error: AxiosError) => {
+            this.logger.error(error.response.data);
+            throw 'An error happened!';
+          }),
+        ),
+    );
+
+    return data;
+  }
+
+  // Incidentes
+  async getIncidents(period = { start: '', end: '' }, teamFilter?) {
+    const incidentsCategories = [
+      "Incidente configuração",
+      "Incidente externo",
+      "Incidente HML/DEV - Manutenção de Ambientes",
+      "Incidente HML/DEV - On-premises",
+      "Incidente Infra",
+      "Incidente PRD - Manutenção de Ambientes",
+      "Incidente PRD - On-premises",
+      "Incidente Produto"
+    ]
+
+    const formattedPeriodQuery = this.oDataProvider
+      .formatPeriod(period, ['resolvedIn', 'createdDate']);
+    const categoriesFilter = this.oDataProvider
+      .formatGroupOperation('or', { property: "category", params: incidentsCategories });
+
+    const URL = `${this.http}?token=${process.env.MOVIDESK_TOKEN}&$select=${this.oDataProvider.$select}&$filter=(${categoriesFilter}) and (${formattedPeriodQuery.replace(/date/g, 'createdDate')} or ${formattedPeriodQuery.replace(/date/g, 'resolvedIn')})&orderBy=createdDate desc`
+
+    console.log(URL);
+
+    const { data: incidents } = await lastValueFrom<{ data: Movidesk.TicketResponse[] }>(
+      this.httpService
+        .get(URL)
+        .pipe(
+          catchError((error: AxiosError) => {
+            this.logger.error(error.response.data);
+            throw 'An error happened!';
+          }),
+        ),
+    );
+
+    const groupedByDay = incidents.reduce((acc, incident) => {
+      const createdDate = incident.createdDate.split('T')[0]; // Extract the date part
+
+      if (!acc[createdDate]) {
+        acc[createdDate] = { count: 0, incidents: [] };
+      }
+
+      acc[createdDate].incidents.push(incident);
+      acc[createdDate].count += 1;
+
+      return acc;
+    }, {});
+
+    return { incidentsByDay: groupedByDay };
+  }
+
+  async processTickets(tickets: Movidesk.TicketResponse[], period = { start: '', end: '' }  ) {
+    console.log(this.oDataProvider.formatPeriod(period));
+    
+    return await this.repository.processTickets(tickets);
+  }
+
+  // * CRUD TICKET ON MOVIDESK
+
   /**
    * Get a ticket from Movidesk
    * @param id Ticket ID
