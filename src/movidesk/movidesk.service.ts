@@ -6,6 +6,9 @@ import { CreateTicketDto } from './dto/create-ticket.dto';
 import { OpenDataProtocolService } from 'src/providers/openDataProtocol.service';
 import { TicketRepository } from './repository/ticket.repository';
 import { TicketFilterDto } from './dto/ticket-filter.dto';
+import { OpenDataProtocolService } from 'src/providers/openDataProtocol.service';
+import { TicketRepository } from './repository/ticket.repository';
+import { TicketFilterDto } from './dto/ticket-filter.dto';
 // import { TicketFilterDto } from './dto/ticket-filter.dto';
 /**
  * Movidesk Service
@@ -35,8 +38,6 @@ export class MovideskService {
    * @type {string}
    */
   http: string = process.env.MOVIDESK_URL;
-
-
 
   async rawQuery(query: string) {
     const { data } = await lastValueFrom<{ data: Movidesk.TicketResponse[] }>(

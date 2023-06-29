@@ -32,7 +32,7 @@ async function bootstrap() {
       url: '0.0.0.0:50051',
       package: 'movidesk',
       // protoPath: join(__dirname, 'movidesk/proto/movidesk.proto'),
-      protoPath: '/Users/square/Documents/Quiver/projects/movidesk_microservice/src/movidesk/proto/movidesk.proto'
+      protoPath: '/Users/square/Documents/Quiver/Projects/metrics_services/movidesk_microservice/src/movidesk/proto/movidesk.proto'
     },
   });
 
