@@ -51,61 +51,59 @@ export class MovideskController {
   async processMetricsFromPeriod(@Body() { period }) {
     console.log(period)
 
-    const { start, end } = period;
+    const { start, end, teams } = period;
 
-    // const data = await this.getAllTickets({ ...this.defaultSearch, period: { start, end } });
+    console.log(start, end, teams);
 
-    const query = "&$select=resolvedIn,lastUpdate,ownerTeam,createdDate,category,owner,subject,id&$expand=actions($expand=timeAppointments($expand=createdBy)),actions($select=status, createdDate),owner($select=businessName)"
-    const periodFilter = "&$filter=(createdDate gt 2023-05-01 and createdDate lt 2023-05-31) or (resolvedIn gt 2023-05-01 and resolvedIn lt 2023-05-31)";
-    const teamFilter = " and (ownerTeam eq 'Infra de Produção' or ownerTeam eq 'Infra Corporativa' )";
-    console.log(start, end)
+    const queryBase = `&$select=resolvedIn,lastUpdate,ownerTeam,createdDate,category,owner,subject,id&$expand=actions($expand=timeAppointments($expand=createdBy)),actions($select=status, createdDate),owner($select=businessName)`
+    const filter = `&$filter=((createdDate ge ${start} and createdDate le ${end}) or (resolvedIn ge ${start} and resolvedIn le ${end}))`
+    const teamFilter = `${!!teams ? teams.split(',').map(team => `ownerTeam eq '${team}'`).join(' or ') : `ownerTeam eq 'Infra de Produção' or ownerTeam eq 'Infra Corporativa' `}`
 
-    const $query = `&$select=resolvedIn,lastUpdate,ownerTeam,createdDate,category,owner,subject,id&$expand=actions($expand=timeAppointments($expand=createdBy)),actions($select=status, createdDate),owner($select=businessName)&$filter=((createdDate gt ${start} and createdDate lt ${end}) or (resolvedIn gt ${start} and resolvedIn lt ${end})) and (ownerTeam eq 'Infra de Produção' or ownerTeam eq 'Infra Corporativa' )`
-    // const data = await this.getAllTickets({ ...this.defaultSearch, period: { start, end } });
-    // return {
-    //   tickets: {
-    //     data
-    //   }
-    // };
+    const query = queryBase + filter + ` and (${teamFilter})`
 
-    // const tickets = await this.movideskService.rawQuery(query + periodFilter + teamFilter);
+    const allTickets: Movidesk.TicketResponse[] = [];
 
-    return await this.movideskService.rawQuery($query)
-      .then(async tickets => {
-        const processedTicketsCount = await this.movideskService.processTickets(tickets);
+    let skip = 0;
+    let responseCount = 0;
 
-        const ticketByTeam: any[] = [];
+    do {
+      const response = await this.movideskService.rawQuery(query + `&$skip=${skip}`);
+      const tickets: Movidesk.TicketResponse[] = response;
+      allTickets.push(...tickets);
 
-        tickets.forEach((ticket) => {
-          const ownerTeam = ticket.ownerTeam;
+      responseCount = tickets.length;
+      skip += responseCount;
 
-          let teamTickets = ticketByTeam.find((t) => t.ownerTeam === ownerTeam);
+      // Break the loop if responseCount is less than 1000
+    } while (responseCount === 1000);
 
-          if (!teamTickets) {
-            teamTickets = { ownerTeam, tickets: [], count: 0 };
+    const processedTicketsCount = await this.movideskService.processTickets(allTickets);
+    
+    // Formatting to return
+    const ticketByTeam: any[] = [];
 
-            ticketByTeam.push(teamTickets);
-          }
+    allTickets.forEach((ticket) => {
+      const ownerTeam = ticket.ownerTeam;
 
-          teamTickets.tickets.push(ticket);
-          teamTickets.count += 1;
-        });
+      let teamTickets = ticketByTeam.find((t) => t.ownerTeam === ownerTeam);
 
-        console.log(ticketByTeam);
+      if (!teamTickets) {
+        teamTickets = { ownerTeam, tickets: [], count: 0 };
 
-        return {
-          data: {
-            ...processedTicketsCount,
-            tickets: ticketByTeam
-          }
-        };
-      })
-    // .then( processedData => {
-    //   if(processedData.data.count.tickets == 1000) {
+        ticketByTeam.push(teamTickets);
+      }
 
-    //   }
+      teamTickets.tickets.push(ticket);
+      teamTickets.count += 1;
+    });
 
-    //  );
+    return {
+      query,
+      data: {
+        ...processedTicketsCount,
+        tickets: ticketByTeam
+      }
+    };
   }
 
   @Post('/raw')

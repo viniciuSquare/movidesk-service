@@ -36,8 +36,6 @@ export class MovideskService {
    */
   http: string = process.env.MOVIDESK_URL;
 
-
-
   async rawQuery(query: string) {
     const { data } = await lastValueFrom<{ data: Movidesk.TicketResponse[] }>(
       this.httpService

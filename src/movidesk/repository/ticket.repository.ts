@@ -25,6 +25,7 @@ export class TicketRepository {
           actionsCount += ticket.actions.length;
 
           console.debug("Processing time appointments from ticket ", ticket.id);
+          
           return Promise.all(ticket.actions.map(async action => {
             appoitmentsCount += action.timeAppointments.length;
 
@@ -63,7 +64,7 @@ export class TicketRepository {
     })
 
     if (ticketRegister) {
-      console.log(ticketRegister.ticketLastUpdate);
+      console.log(ticketRegister.ticketLastUpdate, new Date(ticketRegister.ticketLastUpdate));
 
       return ticketRegister
     } else {
