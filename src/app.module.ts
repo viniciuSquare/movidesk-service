@@ -6,7 +6,7 @@ import { AppService } from './app.service';
 import { ExceptionFilterHttp } from './core/filter/exception_http.filter';
 import { MovideskModule } from './movidesk/movidesk.module';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
-import { PrismaService } from './prisma/prisma.servide';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -24,10 +24,6 @@ import { PrismaService } from './prisma/prisma.servide';
     {
       provide: APP_FILTER,
       useClass: ExceptionFilterHttp,
-    },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: ClassSerializerInterceptor,
     },
   ],
 })

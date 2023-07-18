@@ -3,6 +3,7 @@ import { MovideskService } from './movidesk.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { PrismaService } from 'src/prisma/prisma.servide';
 import { TicketRepository } from './repository/ticket.repository';
+import { Cron } from '@nestjs/schedule';
 
 /**
  * Controller to handle Movidesk requests
@@ -33,77 +34,23 @@ export class MovideskController {
     private prismaService: PrismaService,
     private ticketRepository: TicketRepository
   ) { }
-  @Get()
-  async test() {
-
-    const test = await this.ticketRepository.findOrSaveTeam("Infra de Produção");
-    if (test)
-      console.log(true)
-    else console.log(false)
-
-    return {
-      message: 'Hello World... UÉ',
-      test
-    }
-  }
 
   @Post('/process-period')
   async processMetricsFromPeriod(@Body() { period }) {
     console.log(period)
 
     const { start, end, teams } = period;
-
-    console.log(start, end, teams);
-
-    const queryBase = `&$select=resolvedIn,lastUpdate,ownerTeam,createdDate,category,owner,subject,id&$expand=actions($expand=timeAppointments($expand=createdBy)),actions($select=status, createdDate),owner($select=businessName)`
-    const filter = `&$filter=((createdDate ge ${start} and createdDate le ${end}) or (resolvedIn ge ${start} and resolvedIn le ${end}))`
-    const teamFilter = `${!!teams ? teams.split(',').map(team => `ownerTeam eq '${team}'`).join(' or ') : `ownerTeam eq 'Infra de Produção' or ownerTeam eq 'Infra Corporativa' `}`
-
-    const query = queryBase + filter + ` and (${teamFilter})`
-
-    const allTickets: Movidesk.TicketResponse[] = [];
-
-    let skip = 0;
-    let responseCount = 0;
-
-    do {
-      const response = await this.movideskService.rawQuery(query + `&$skip=${skip}`);
-      const tickets: Movidesk.TicketResponse[] = response;
-      allTickets.push(...tickets);
-
-      responseCount = tickets.length;
-      skip += responseCount;
-
-      // Break the loop if responseCount is less than 1000
-    } while (responseCount === 1000);
-
-    const processedTicketsCount = await this.movideskService.processTickets(allTickets);
     
-    // Formatting to return
-    const ticketByTeam: any[] = [];
+    const formattedTeams = teams 
+      ? teams.split(',').map(team => `ownerTeam eq '${team}'`).join(' or ')
+      : undefined;
 
-    allTickets.forEach((ticket) => {
-      const ownerTeam = ticket.ownerTeam;
-
-      let teamTickets = ticketByTeam.find((t) => t.ownerTeam === ownerTeam);
-
-      if (!teamTickets) {
-        teamTickets = { ownerTeam, tickets: [], count: 0 };
-
-        ticketByTeam.push(teamTickets);
-      }
-
-      teamTickets.tickets.push(ticket);
-      teamTickets.count += 1;
-    });
-
-    return {
-      query,
-      data: {
-        ...processedTicketsCount,
-        tickets: ticketByTeam
-      }
-    };
+    return this.movideskService
+      .processMetricsFromPeriod(
+        start, 
+        end, 
+        formattedTeams
+      )
   }
 
   @Post('/raw')

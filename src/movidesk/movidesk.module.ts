@@ -2,18 +2,19 @@ import { Module } from '@nestjs/common';
 import { MovideskService } from './movidesk.service';
 import { MovideskController } from './movidesk.controller';
 import { HttpModule } from '@nestjs/axios';
-import { MovideskGrpcServerController } from './movidesk-grpc-server/movidesk-grpc-server.controller';
 import { OpenDataProtocolService } from '../providers/openDataProtocol.service';
 import { PrismaService } from 'src/prisma/prisma.servide';
 import { TicketRepository } from './repository/ticket.repository';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
-  imports: [HttpModule.register({})],
-  controllers: [MovideskController, MovideskGrpcServerController],
+  imports: [HttpModule.register({}), ScheduleModule.forRoot()],
+  controllers: [MovideskController],
   providers: [
     MovideskService,
     OpenDataProtocolService,
-    PrismaService, TicketRepository
+    TicketRepository,
+    PrismaService
   ],
 })
-export class MovideskModule {}
+export class MovideskModule { }

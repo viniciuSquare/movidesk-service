@@ -6,9 +6,7 @@ import { CreateTicketDto } from './dto/create-ticket.dto';
 import { OpenDataProtocolService } from 'src/providers/openDataProtocol.service';
 import { TicketRepository } from './repository/ticket.repository';
 import { TicketFilterDto } from './dto/ticket-filter.dto';
-import { OpenDataProtocolService } from 'src/providers/openDataProtocol.service';
-import { TicketRepository } from './repository/ticket.repository';
-import { TicketFilterDto } from './dto/ticket-filter.dto';
+import { Cron } from '@nestjs/schedule';
 // import { TicketFilterDto } from './dto/ticket-filter.dto';
 /**
  * Movidesk Service
@@ -69,8 +67,86 @@ export class MovideskService {
     };
   }
 
-  // METRICS QUERY
+  @Cron('0 */2 * * * *')
+  async handleScheduledTask() {
+    let count = 0
+    const today = new Date().toISOString().split('T')[0];
+    
+    const [ year, month, day ] = today.split('-');
+    const yesterday = `${year}-${month}-${Number(day)-1}`;
 
+
+    console.log("HELLO WORLD ⚡️ ", count++, today, yesterday) 
+    // Perform data processing here
+    await this.processMetricsFromPeriod(today, yesterday);
+
+  }
+
+  async processMetricsFromPeriod(
+    start: string, 
+    end: string, 
+    teams = `ownerTeam eq 'Infra de Produção' or ownerTeam eq 'Infra Corporativa' ` 
+  ) {
+    const queryBase = `&$select=resolvedIn,lastUpdate,ownerTeam,createdDate,category,owner,subject,id&$expand=actions($expand=timeAppointments($expand=createdBy)),actions($select=status, createdDate),owner($select=businessName)`
+    const filter = `&$filter=((createdDate ge ${start} and createdDate le ${end}) or (resolvedIn ge ${start} and resolvedIn le ${end}))`
+    const teamFilter = `${ teams }`
+
+    const query = queryBase + filter + ` and (${teamFilter})`
+    
+    console.log(query, 'query');
+
+    const allTickets: Movidesk.TicketResponse[] = [];
+
+    let skip = 0;
+    let responseCount = 0;
+
+    do {
+      const response = await this.rawQuery(query + `&$skip=${skip}`);
+      const tickets: Movidesk.TicketResponse[] = response;
+      allTickets.push(...tickets);
+
+      responseCount = tickets.length;
+      skip += responseCount;
+
+      // Break the loop if responseCount is less than 1000
+    } while (responseCount === 1000);
+
+    const processedTicketsCount = await this.processTickets(allTickets);
+    console.log("Passou aqui")
+    // Formatting to return
+    const ticketByTeam: any[] = [];
+
+    allTickets.forEach((ticket) => {
+      const ownerTeam = ticket.ownerTeam;
+
+      let teamTickets = ticketByTeam.find((t) => t.ownerTeam === ownerTeam);
+
+      if (!teamTickets) {
+        teamTickets = { ownerTeam, tickets: [], count: 0 };
+
+        ticketByTeam.push(teamTickets);
+      }
+
+      teamTickets.tickets.push(ticket);
+      teamTickets.count += 1;
+    });
+
+    return {
+      query,
+      data: {
+        ...processedTicketsCount,
+        tickets: ticketByTeam
+      }
+    };
+  }
+
+  async processTickets(tickets: Movidesk.TicketResponse[], period = { start: '', end: '' }  ) {
+    console.log(this.oDataProvider.formatPeriod(period),' period formatted');
+    
+    return await this.repository.processTickets(tickets);
+  }
+  
+  // METRICS QUERY
   async getTicketsByEmployee(search, period = { start: '', end: '' }) {
     const query = await this.oDataProvider.formatNormalFieldValues(
       search?.normalFieldValues,
@@ -142,12 +218,6 @@ export class MovideskService {
     return { incidentsByDay: groupedByDay };
   }
 
-  async processTickets(tickets: Movidesk.TicketResponse[], period = { start: '', end: '' }  ) {
-    console.log(this.oDataProvider.formatPeriod(period));
-    
-    return await this.repository.processTickets(tickets);
-  }
-
   // * CRUD TICKET ON MOVIDESK
 
   /**
@@ -156,6 +226,8 @@ export class MovideskService {
    * @returns  Ticket typeof Movidesk.TicketResponse
    */
   async getTicket(id: string): Promise<Movidesk.TicketResponse> {
+    console.log("To fetch data");
+
     const { data } = await lastValueFrom<{ data: Movidesk.TicketResponse }>(
       this.httpService.get(
         `${this.http}?token=${process.env.MOVIDESK_TOKEN}&id=${id}`,

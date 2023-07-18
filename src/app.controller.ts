@@ -5,12 +5,8 @@ import { AppService } from './app.service';
  * Controller to handle requests
  * @class AppController
  */
-@Controller()
+@Controller('')
 export class AppController {
-  /**
-   * Constructor
-   * @param appService App Service to handle requests
-   */
   constructor(private readonly appService: AppService) { }
 
   /**
@@ -18,7 +14,7 @@ export class AppController {
    * @returns Message
    * @example 'Hello World!'
    */
-  @Get()
+  @Get('/')
   getHello(): string {
     return 'Hello World!';
   }

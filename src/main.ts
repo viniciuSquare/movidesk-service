@@ -25,21 +25,8 @@ async function bootstrap() {
       transform: true,
     }),
   );
-
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.GRPC,
-    options: {
-      url: '0.0.0.0:50051',
-      package: 'movidesk',
-      // protoPath: join(__dirname, 'movidesk/proto/movidesk.proto'),
-      protoPath: '/Users/square/Documents/Quiver/Projects/metrics_services/movidesk_microservice/src/movidesk/proto/movidesk.proto'
-    },
-  });
-
   console.log(__dirname);
 
-  await app.startAllMicroservices();
-
-  await app.listen(3000);
+  await app.listen(3033);
 }
 bootstrap();
