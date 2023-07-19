@@ -1,7 +1,7 @@
 import { Controller, Get, Body, Patch, Param, Post, Query } from '@nestjs/common';
 import { MovideskService } from './movidesk.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
-import { PrismaService } from 'src/prisma/prisma.servide';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { TicketRepository } from './repository/ticket.repository';
 import { Cron } from '@nestjs/schedule';
 

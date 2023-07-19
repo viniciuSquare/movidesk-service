@@ -1,12 +1,11 @@
 import { OpenDataProtocolService } from './providers/openDataProtocol.service';
-import { Module, ClassSerializerInterceptor } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ExceptionFilterHttp } from './core/filter/exception_http.filter';
 import { MovideskModule } from './movidesk/movidesk.module';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
-import { ScheduleModule } from '@nestjs/schedule';
+import { APP_FILTER } from '@nestjs/core';
 
 @Module({
   imports: [
