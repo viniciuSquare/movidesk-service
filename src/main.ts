@@ -27,6 +27,6 @@ async function bootstrap() {
   );
   console.log(__dirname);
 
-  await app.listen(3033);
+  await app.listen(3000);
 }
 bootstrap();

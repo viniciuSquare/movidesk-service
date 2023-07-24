@@ -1,6 +1,6 @@
 import { PrismaService } from "src/prisma/prisma.service";
 import { Injectable } from "@nestjs/common";
-import { Team } from "@prisma/client";
+import { Prisma, Team } from "@prisma/client";
 
 @Injectable()
 export class TicketRepository {
@@ -17,6 +17,7 @@ export class TicketRepository {
     const ticketsCount = tickets.length;
     let actionsCount = 0;
     let appoitmentsCount = 0;
+    const status: string[] = [];
 
     await Promise.all(tickets.map(async ticket => {
       // * PERSIST TICKET
@@ -25,7 +26,11 @@ export class TicketRepository {
           actionsCount += ticket.actions.length;
 
           console.debug("Processing time appointments from ticket ", ticket.id);
-          
+
+          if(!status.includes(ticket.status)) {
+            status.push(ticket.status);
+          }
+
           return Promise.all(ticket.actions.map(async action => {
             appoitmentsCount += action.timeAppointments.length;
 
@@ -36,13 +41,14 @@ export class TicketRepository {
           })
           )
         })
-      }
+    }
     ))
     return {
       count: {
         tickets: ticketsCount,
         actions: actionsCount,
         appointments: appoitmentsCount,
+        status
       }
     }
   }
@@ -55,7 +61,7 @@ export class TicketRepository {
       throw new Error(`Team ${ticket.ownerTeam} not found!`);
     }
 
-    const ticketRegister = await this.prismaService.ticket.findFirst({
+    let ticketRegister = await this.prismaService.ticket.findFirst({
       where: {
         ticketNumber: {
           equals: ticket.id
@@ -63,9 +69,26 @@ export class TicketRepository {
       }
     })
 
-    if (ticketRegister) {
-      console.log(ticketRegister.ticketLastUpdate, new Date(ticketRegister.ticketLastUpdate));
+    const { ticketNumber, ...ticketData } = this.feedTicketFromResponse(ticket, teamRegister.id);
 
+    if (ticketRegister) {
+      // IS TICKET UPDATED?
+      if (
+        (ticketRegister.ticketLastUpdate.toISOString() != new Date(ticket.lastUpdate).toISOString()) || 
+        (ticketRegister.status != ticket.status) ||
+        ((ticket.slaSolutionDate && ticketRegister.slaSolutionDate) && (ticketRegister.slaSolutionDate?.toISOString() != new Date(ticket.slaSolutionDate).toISOString()))
+      ) {
+        console.log(ticketRegister.ticketNumber, ' newer updates ', new Date(ticket.lastUpdate).toISOString());
+       
+        ticketRegister = await this.prismaService.ticket.update({
+          where: {
+            ticketNumber: ticketNumber
+          },
+          data: {
+            ...ticketData,
+          }
+        })
+      }
       return ticketRegister
     } else {
       // * SAVE TICKET IF NOT FOUND
@@ -73,14 +96,8 @@ export class TicketRepository {
 
       return await this.prismaService.ticket.create({
         data: {
-          ticketNumber: ticket.id,
-          teamId: teamRegister.id,
-          ticketCreatedDate: new Date(ticket.createdDate).toISOString(),
-          ticketLastUpdate: new Date(ticket.lastUpdate).toISOString(),
-          ownerName: ticket.owner?.businessName,
-          category: ticket.category,
-          isIncident: this.isIncident(ticket.category),
-          ticketResolvedIn: new Date(ticket.resolvedIn).toISOString()
+          ticketNumber,
+          ...ticketData
         }
       })
     }
@@ -152,4 +169,23 @@ export class TicketRepository {
     }
     return timeRegister;
   }
+
+  feedTicketFromResponse(response: Movidesk.TicketResponse, teamId: number) {
+    return {
+      ticketNumber: response.id,
+      teamId: teamId,
+      ownerName: response.owner?.businessName,
+      category: response.category,
+      status: response.status,
+
+      ticketCreatedDate: new Date(response.createdDate).toISOString(),
+      ticketLastUpdate: new Date(response.lastUpdate).toISOString(),
+      ticketResolvedIn: response.resolvedIn
+        ? new Date(response.resolvedIn).toISOString() : null,
+      slaSolutionDate: response.slaSolutionDate
+        ? new Date(response.slaSolutionDate).toISOString() : null,
+      isIncident: this.isIncident(response.category)
+    }
+  }
+
 } 

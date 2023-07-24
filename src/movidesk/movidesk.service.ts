@@ -67,7 +67,7 @@ export class MovideskService {
     };
   }
 
-  @Cron('0 */2 * * * *')
+  // @Cron('0 */2 * * * *')
   async handleScheduledTask() {
     let count = 0
     const today = new Date().toISOString().split('T')[0];
@@ -87,7 +87,7 @@ export class MovideskService {
     end: string, 
     teams = `ownerTeam eq 'Infra de Produção' or ownerTeam eq 'Infra Corporativa' ` 
   ) {
-    const queryBase = `&$select=resolvedIn,lastUpdate,ownerTeam,createdDate,category,owner,subject,id&$expand=actions($expand=timeAppointments($expand=createdBy)),actions($select=status, createdDate),owner($select=businessName)`
+    const queryBase = `&$select=status,slaSolutionDate,resolvedIn,lastUpdate,ownerTeam,createdDate,category,owner,subject,id&$expand=actions($expand=timeAppointments($expand=createdBy)),actions($select=status, createdDate),owner($select=businessName)`
     const filter = `&$filter=((createdDate ge ${start} and createdDate le ${end}) or (resolvedIn ge ${start} and resolvedIn le ${end}))`
     const teamFilter = `${ teams }`
 
@@ -111,7 +111,7 @@ export class MovideskService {
       // Break the loop if responseCount is less than 1000
     } while (responseCount === 1000);
 
-    const processedTicketsCount = await this.processTickets(allTickets);
+    const processedTicketsCount = await this.repository.processTickets(allTickets);
     console.log("Passou aqui")
     // Formatting to return
     const ticketByTeam: any[] = [];
@@ -140,11 +140,11 @@ export class MovideskService {
     };
   }
 
-  async processTickets(tickets: Movidesk.TicketResponse[], period = { start: '', end: '' }  ) {
-    console.log(this.oDataProvider.formatPeriod(period),' period formatted');
+  // async processTickets(tickets: Movidesk.TicketResponse[], period = { start: '', end: '' }  ) {
+  //   console.log(this.oDataProvider.formatPeriod(period),' period formatted');
     
-    return await this.repository.processTickets(tickets);
-  }
+  //   return await this.repository.processTickets(tickets);
+  // }
   
   // METRICS QUERY
   async getTicketsByEmployee(search, period = { start: '', end: '' }) {
@@ -155,6 +155,7 @@ export class MovideskService {
     const periodQuery = this.oDataProvider.formatPeriod(period);
 
     console.log(query);
+    
     const { data } = await lastValueFrom<{ data: Movidesk.TicketResponse[] }>(
       this.httpService
         .get(`${this.http}?token=${process.env.MOVIDESK_TOKEN}${query} and ${periodQuery}`)
