@@ -1,16 +1,20 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { AxiosError } from 'axios';
+
 import { catchError, lastValueFrom } from 'rxjs';
+
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { OpenDataProtocolService } from 'src/providers/openDataProtocol.service';
+
 import { TicketRepository } from './repository/ticket.repository';
+import { TeamRepository } from './repository/team.repository';
+
 import { TicketFilterDto } from './dto/ticket-filter.dto';
-import { Cron } from '@nestjs/schedule';
-// import { TicketFilterDto } from './dto/ticket-filter.dto';
+
 /**
- * Movidesk Service
  * @class MovideskService
+ * Communication with ModiDesk API
  */
 @Injectable()
 export class MovideskService {
@@ -26,7 +30,8 @@ export class MovideskService {
   constructor(
     private readonly httpService: HttpService,
     private readonly oDataProvider: OpenDataProtocolService,
-    private readonly repository: TicketRepository,
+    private readonly ticketRepository: TicketRepository,
+    private readonly teamRepository: TeamRepository,
 
     // @Inject('OData') private readonly oDataProvider: IOData,
   ) { }
@@ -78,17 +83,18 @@ export class MovideskService {
 
     console.log("HELLO WORLD ⚡️ ", count++, today, yesterday) 
     // Perform data processing here
-    await this.processMetricsFromPeriod(today, yesterday);
+    await this.processTicketsFromPeriod(today, yesterday);
 
   }
 
-  async processMetricsFromPeriod(
+  async processTicketsFromPeriod(
     start: string, 
     end: string, 
     teams = `ownerTeam eq 'Infra de Produção' or ownerTeam eq 'Infra Corporativa' ` 
   ) {
-    const queryBase = `&$select=status,slaSolutionDate,resolvedIn,lastUpdate,ownerTeam,createdDate,category,owner,subject,id&$expand=actions($expand=timeAppointments($expand=createdBy)),actions($select=status, createdDate),owner($select=businessName)`
-    const filter = `&$filter=((createdDate ge ${start} and createdDate le ${end}) or (resolvedIn ge ${start} and resolvedIn le ${end}))`
+    const queryBase = `&$select=status,closedIn,slaSolutionDate,resolvedIn,lastUpdate,ownerTeam,createdDate,category,owner,subject,id&$expand=actions($expand=timeAppointments($expand=createdBy)),actions($select=status, createdDate),owner($select=businessName)`
+    const filter = `&$filter=((createdDate ge ${start} and createdDate le ${end}) or (resolvedIn ge ${start} and resolvedIn le ${end}) or (lastUpdate ge ${start} and lastUpdate le ${end}))`
+
     const teamFilter = `${ teams }`
 
     const query = queryBase + filter + ` and (${teamFilter})`
@@ -111,7 +117,7 @@ export class MovideskService {
       // Break the loop if responseCount is less than 1000
     } while (responseCount === 1000);
 
-    const processedTicketsCount = await this.repository.processTickets(allTickets);
+    const processedTicketsCount = await this.ticketRepository.processTickets(allTickets);
     console.log("Passou aqui")
     // Formatting to return
     const ticketByTeam: any[] = [];
@@ -140,12 +146,16 @@ export class MovideskService {
     };
   }
 
-  // async processTickets(tickets: Movidesk.TicketResponse[], period = { start: '', end: '' }  ) {
-  //   console.log(this.oDataProvider.formatPeriod(period),' period formatted');
+  async deleteTickets( 
+    start: string, 
+    end: string,
+    teams = ['Infra de Produção', 'Infra Corporativa']
+  ) {
+    const teamsIds = await this.teamRepository.getTeamsIds(teams);
     
-  //   return await this.repository.processTickets(tickets);
-  // }
-  
+    return await this.ticketRepository.deleteTicketsFromPeriod(start, end, teamsIds);
+  }
+
   // METRICS QUERY
   async getTicketsByEmployee(search, period = { start: '', end: '' }) {
     const query = await this.oDataProvider.formatNormalFieldValues(

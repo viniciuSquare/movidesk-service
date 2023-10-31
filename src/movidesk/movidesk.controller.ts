@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Patch, Param, Post, Query } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Post, Query, Delete } from '@nestjs/common';
 import { MovideskService } from './movidesk.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -25,6 +25,7 @@ export class MovideskController {
       ]
     }
   }
+
   /**
    * Constructor
    * @param movideskService Movidesk Service to handle requests
@@ -36,21 +37,34 @@ export class MovideskController {
   ) { }
 
   @Post('/process-period')
-  async processMetricsFromPeriod(@Body() { period }) {
+  async processTicketsFromPeriod(@Body() { period }) {
     console.log(period)
 
     const { start, end, teams } = period;
     
     const formattedTeams = teams 
-      ? teams.split(',').map(team => `ownerTeam eq '${team}'`).join(' or ')
+      ? teams.split(',')
       : undefined;
 
     return this.movideskService
-      .processMetricsFromPeriod(
+      .processTicketsFromPeriod(
         start, 
         end, 
         formattedTeams
       )
+  }
+
+  @Delete('period')
+  async deleteTicketFromPeriod(@Body() { period }) {
+    const { start, end, teams } = period;
+
+    const formattedTeams = teams 
+      ? teams.split(',')
+      : undefined;
+
+    return {
+      ticketsDeleted: (await this.movideskService.deleteTickets(start, end, formattedTeams)).count
+    }
   }
 
   @Post('/raw')

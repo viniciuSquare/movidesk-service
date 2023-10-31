@@ -18,6 +18,7 @@ model Ticket {
   ticketCreatedDate DateTime
   ticketLastUpdate  DateTime
   slaSolutionDate   DateTime?
+  closedIn          DateTime?
   status            String?
   teamId            Int
   ticketResolvedIn  DateTime?

@@ -1,6 +1,8 @@
 import { PrismaService } from "src/prisma/prisma.service";
 import { Injectable } from "@nestjs/common";
-import { Prisma, Team } from "@prisma/client";
+import { Prisma, Team, Ticket } from "@prisma/client";
+import * as dayjs from "dayjs";
+import { TeamRepository } from "./team.repository";
 
 @Injectable()
 export class TicketRepository {
@@ -9,9 +11,8 @@ export class TicketRepository {
 
   constructor(
     private prismaService: PrismaService,
-  ) {
-
-  }
+    private teamRepository: TeamRepository,
+  ) { }
 
   async processTickets(tickets: Movidesk.TicketResponse[]) {
     const ticketsCount = tickets.length;
@@ -27,7 +28,7 @@ export class TicketRepository {
 
           console.debug("Processing time appointments from ticket ", ticket.id);
 
-          if(!status.includes(ticket.status)) {
+          if (!status.includes(ticket.status)) {
             status.push(ticket.status);
           }
 
@@ -43,6 +44,7 @@ export class TicketRepository {
         })
     }
     ))
+
     return {
       count: {
         tickets: ticketsCount,
@@ -53,11 +55,12 @@ export class TicketRepository {
     }
   }
 
-  async findOrSaveTicket(ticket: Movidesk.TicketResponse) {
+  private async findOrSaveTicket(ticket: Movidesk.TicketResponse) {
     // * FIND TEAM
-    const teamRegister = await this.findOrSaveTeam(ticket.ownerTeam);
-
-    if (!teamRegister) {
+    let teamRegister: Team
+    try {
+      teamRegister = await this.teamRepository.findOrSaveTeam(ticket.ownerTeam);
+    } catch (error) {
       throw new Error(`Team ${ticket.ownerTeam} not found!`);
     }
 
@@ -73,13 +76,18 @@ export class TicketRepository {
 
     if (ticketRegister) {
       // IS TICKET UPDATED?
-      if (
-        (ticketRegister.ticketLastUpdate.toISOString() != new Date(ticket.lastUpdate).toISOString()) || 
+      const hasNewerUpdates = (
+        (ticketRegister.ticketLastUpdate.toISOString() != new Date(ticket.lastUpdate).toISOString()) ||
         (ticketRegister.status != ticket.status) ||
-        ((ticket.slaSolutionDate && ticketRegister.slaSolutionDate) && (ticketRegister.slaSolutionDate?.toISOString() != new Date(ticket.slaSolutionDate).toISOString()))
-      ) {
+        (
+          (ticket.slaSolutionDate && ticketRegister.slaSolutionDate) &&
+          (ticketRegister.slaSolutionDate?.toISOString() != new Date(ticket.slaSolutionDate).toISOString())
+        )
+      )
+
+      if (hasNewerUpdates) {
         console.log(ticketRegister.ticketNumber, ' newer updates ', new Date(ticket.lastUpdate).toISOString());
-       
+
         ticketRegister = await this.prismaService.ticket.update({
           where: {
             ticketNumber: ticketNumber
@@ -103,36 +111,7 @@ export class TicketRepository {
     }
   }
 
-  async findOrSaveTeam(name: string) {
-    // If the team is already saved
-    if (this.team?.name == name)
-      return this.team;
-
-    this.team = await this.prismaService.team.findFirst({
-      where: {
-        name: {
-          equals: name,
-        }
-      }
-    })
-
-    console.log(this.team);
-
-    if (this.team) {
-      console.log('Team saved returned');
-
-      return this.team
-    }
-
-    console.log('Saving new team');
-    return await this.prismaService.team.create({
-      data: {
-        name: name
-      }
-    })
-  }
-
-  isIncident(category: string): boolean {
+  private isIncident(category: string): boolean {
     const incidentsCategories = [
       "Incidente configuração",
       "Incidente externo",
@@ -147,7 +126,7 @@ export class TicketRepository {
     return incidentsCategories.includes(category);
   }
 
-  async findOrSaveAction(timeAppointment: Movidesk.TimeAppointment, ticketId: number) {
+  private async findOrSaveAction(timeAppointment: Movidesk.TimeAppointment, ticketId: number) {
     const timeRegister = await this.prismaService.actionTimes.findFirst({
       where: {
         id: timeAppointment.id
@@ -160,7 +139,7 @@ export class TicketRepository {
       return await this.prismaService.actionTimes.create({
         data: {
           id: timeAppointment.id,
-          date: new Date(timeAppointment.date).toISOString(),
+          date: this.formatDate(timeAppointment.date, true),
           timeSpent: timeAppointment.accountedTime,
           person: timeAppointment.createdBy.businessName,
           ticketNumber: ticketId,
@@ -170,7 +149,49 @@ export class TicketRepository {
     return timeRegister;
   }
 
-  feedTicketFromResponse(response: Movidesk.TicketResponse, teamId: number) {
+  async deleteTicketsFromPeriod(start: string, end: string, teamsIds: number[]) {
+    // TICKETS FROM THE PERIOD
+    const ticketsIds = await this.prismaService.ticket.findMany({
+      where: {
+        AND: [
+          {
+            ticketCreatedDate: {
+              gte: new Date(start),
+              lte: new Date(end)
+            }
+          },
+          {
+            teamId: {
+              in: teamsIds
+            }
+          }
+        ]
+      }
+    }).then(result => result.map(ticket => ticket.ticketNumber) )
+
+    // DELETE TICKET ACTIONS
+    await this.prismaService.actionTimes.deleteMany({
+      where: {
+        ticketNumber: {
+          in: ticketsIds
+        }
+      }
+    })
+    // DELETE TICKETS
+    const deletedTickets = await this.prismaService.ticket.deleteMany({
+      where: {
+        ticketNumber: {
+          in: ticketsIds
+        }
+      }
+    })
+
+    console.log(deletedTickets.count, " tickets deleted");
+    
+    return deletedTickets
+  }
+
+  private feedTicketFromResponse(response: Movidesk.TicketResponse, teamId: number) {
     return {
       ticketNumber: response.id,
       teamId: teamId,
@@ -178,14 +199,36 @@ export class TicketRepository {
       category: response.category,
       status: response.status,
 
-      ticketCreatedDate: new Date(response.createdDate).toISOString(),
-      ticketLastUpdate: new Date(response.lastUpdate).toISOString(),
-      ticketResolvedIn: response.resolvedIn
-        ? new Date(response.resolvedIn).toISOString() : null,
-      slaSolutionDate: response.slaSolutionDate
-        ? new Date(response.slaSolutionDate).toISOString() : null,
-      isIncident: this.isIncident(response.category)
+      ticketCreatedDate: this.formatDate(response.createdDate),
+      ticketLastUpdate: this.formatDate(response.lastUpdate),
+      ticketResolvedIn: this.formatDate(response.resolvedIn),
+      slaSolutionDate: this.formatDate(response.slaSolutionDate),
+      isIncident: this.isIncident(response.category),
+      closedIn: this.formatDate(response.closedIn)
     }
   }
 
+  private formatDate(dateString?: string, onlyWeekDays = false) {
+    if (!dateString)
+      return null
+
+    dateString = dateString.split('T')[0];
+    const date = dayjs(dateString);
+
+    const [sunday, saturday] = [0, 6];
+    const weekendDays = [sunday, saturday];
+
+    const day = date.day();
+
+    const isValid = !weekendDays.includes(day);
+
+    if (!isValid && onlyWeekDays) {
+      const nextValidDate = date.add(day == sunday ? 1 : 2, 'day');
+
+      console.table([day, date.toISOString(), nextValidDate.toISOString()]);
+
+      return nextValidDate.toISOString()
+
+    } return date.toISOString();
+  }
 } 
